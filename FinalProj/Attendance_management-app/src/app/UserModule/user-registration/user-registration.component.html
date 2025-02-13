@@ -1,0 +1,72 @@
+
+<div class="registerpage" style="margin: 0px; min-height: 100vh; padding:15px">
+    <div class="container w-50">
+      
+      <div class="div">
+        <button class="btn btn-primary mt-2" [routerLink]="'/'">Back</button>
+      </div>
+  
+      <!-- Registration Form -->
+      <div class="card p-4 shadow-lg mt-4">
+        <h3 class="text-center mb-4" style="font-weight: 600;">User Registration</h3>
+        <form [formGroup]="regForm" (ngSubmit)="registerUser()">
+          
+          <div class="mb-3">
+            <label for="userid" class="form-label">User Id</label>
+            <input type="text" id="userid" class="form-control" formControlName="id" />
+          </div>
+          
+          <div class="mb-3">
+            <label for="username" class="form-label">User Name</label>
+            <input type="text" id="username" class="form-control" formControlName="name" />
+          </div>
+          
+          <div class="mb-3">
+            <label for="useremail" class="form-label">User Email</label>
+            <input type="text" id="useremail" class="form-control" formControlName="email" />
+          </div>
+          
+          <div class="mb-3 position-relative">
+            <label for="userpassword" class="form-label">Password</label>
+            <input [type]="showPassword ? 'text' : 'password'" id="userpassword" class="form-control" formControlName="password"/>
+            <!-- (click)="togglePassword()" -->
+            <span  style="position: absolute; right: 10px; top: 38px; cursor: pointer">
+              <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+            </span>
+          </div>
+  
+          <!-- Role Selection -->
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select name="role" formControlName="role" id="" class="form-control">
+              <option  *ngFor="let onerole of roles"  [value]="onerole.roleName">{{onerole.roleName}}</option>
+            </select>
+          </div>
+  
+          
+
+          <!-- Profile Picture Section -->
+          <div class="card p-4 shadow-lg" *ngIf="regForm.valid">
+            <h3 class="text-center mb-3" style="font-weight: 600;">Upload Profile Picture</h3>
+            <div class="text-center">
+              <img [src]="profilePic" class="rounded-circle border" height="200px" />
+            </div>
+            <div class="mt-3 text-center">
+              <input type="file" class="form-control" (change)="onFileSelected($event)" accept="image/*" formControlName="profilePicture" />
+              <!-- <button class="btn btn-primary mt-2" (click)="onUpload()" *ngIf="!hasUploadedProfileImage && regForm.valid">Upload</button>
+              <button class="btn btn-primary mt-2" (click)="isNotUploadingProfileImage=true" *ngIf="!hasUploadedProfileImage || regForm.valid">Not Now</button> -->
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center mt-2">
+            <button type="submit" class="btn btn-success w-50" *ngIf="hasUploadedProfileImage || isNotUploadingProfileImage">Register</button>
+          </div>
+        </form>
+        <div class="mt-2 text-center">
+          <button class="btn btn-primary mt-2" (click)="onUpload()" *ngIf="!hasUploadedProfileImage && regForm.valid">Upload</button>
+          <button class="btn btn-primary mt-2" (click)="isNotUploadingProfileImage=true" *ngIf="!hasUploadedProfileImage || regForm.valid">Not Now</button>
+        </div>
+      </div>
+    </div>
+  </div>

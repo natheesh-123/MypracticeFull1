@@ -1,0 +1,17 @@
+<div class="attendance-mark d-flex justify-content-center align-items-center vh-100" style="background-color: #f8f9fa;">
+  <div class="card shadow-lg p-4" style="width: 450px; height: 300px; border-radius: 10px;">
+    <h3 class="text-center mb-3 text-primary" style="font-weight: bold;">Mark Attendance</h3><br/>
+    
+    <form >
+      <div class="form-group mb-3">
+        <label for="attendanceDate">Today:</label>
+        <input type="date" id="attendanceDate" class="form-control" [value]="attendanceDate" [min]="attendanceDate" [max]="attendanceDate" name="attendanceDate" required/>
+      </div>
+      <div class="d-flex justify-content-center mt-3">
+        <button *ngIf="canGiveAttendance" (click)="submitAttendance()" class="btn btn-primary">Submit Attendance</button>
+        <button *ngIf="!canGiveAttendance" (click)="submitAttendance()" class="btn btn-primary" disabled>Submit Attendance</button>
+      </div>
+    </form>
+  </div>
+</div>
+  

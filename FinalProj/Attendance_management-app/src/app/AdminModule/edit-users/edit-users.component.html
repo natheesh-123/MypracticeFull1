@@ -1,0 +1,181 @@
+<div class="container mt-4">
+  <h2 class="text-center">User Management</h2>
+  <button *ngIf="canEditUsers" class="btn btn-primary mb-3" (click)="openAddUserForm()">
+    <i class="bi bi-plus-circle"></i> Add User
+  </button>
+
+  <table class="table table-striped table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Password</th>
+        <th>Role</th>
+        <th>Profile_Picture</th>
+        <th *ngIf="canEditUsers">Edit/Remove</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.password }}</td>
+        <td>{{ user.role }}</td>
+        <td><img [src]="http.baseURL +'/Image/Get/'+user.profilePicture" alt="Profile" width="50" /></td>
+        <td *ngIf="canEditUsers">
+          <button
+            class="btn btn-warning btn-sm me-2"
+            (click)="openUserForm(user)"
+          >
+            <i class="bi bi-pencil-square"></i>
+          </button>
+          <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- User Edit Form Modal -->
+<div *ngIf="showUserForm" class="modal d-block" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit User</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeUserForm()"
+        ></button>
+      </div>
+      <div class="modal-body">
+         <form (ngSubmit)="saveUser()">
+          <div class="mb-3">
+            <label>Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="selectedUser.name"
+              name="name"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label>Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              [(ngModel)]="selectedUser.email"
+              name="email"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label>Password:</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedUser.password" name="password" required />
+          </div>
+          <div class="mb-3">
+            <label>Role:</label>
+            <select
+              class="form-control"
+              [(ngModel)]="selectedUser.role"
+              name="role"
+              required
+            >
+              <option  *ngFor="let role of roles" [value]="role.roleName">{{role.roleName}}</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label>Profile Picture</label>
+            <select
+              class="form-control"
+              [(ngModel)]="selectedUser.profilePicture"
+              name="role"
+              required
+            >
+              <option [value]="selectedUser.profilePicture">{{selectedUser.profilePicture}}</option>
+              <option value="ProfilePhotoPlaceholder.jpg">None</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-success w-100">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- User Add Form -->
+<div *ngIf="showAddUserForm" class="modal d-block" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add User</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="closeAddUserForm()"
+        ></button>
+      </div>
+      <div class="modal-body">
+         <form [formGroup]="addUserForm" (ngSubmit)="addUser()">
+          <div class="mb-3">
+            <label>Id:</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="id"
+              (blur)="validate('id')"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label>Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="name"
+              (blur)="validate('name')"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label>Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              (blur)="validate('email')"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label>Password:</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              formControlName="password"
+              (blur)="validate('password')" required />
+          </div>
+          <div class="mb-3">
+            <label>Role:</label>
+            <select
+              class="form-control"
+              formControlName="role"
+              (blur)="validate('role')"
+              required
+            >
+            <option *ngFor="let role of roles" [value]="role.roleName">{{role.roleName}}</option>
+            </select>
+          </div>
+          <button *ngIf="addUserForm.valid" type="submit" class="btn btn-success w-100">Save</button>
+          <button *ngIf="!addUserForm.valid" type="submit" class="btn btn-success w-100" disabled>Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

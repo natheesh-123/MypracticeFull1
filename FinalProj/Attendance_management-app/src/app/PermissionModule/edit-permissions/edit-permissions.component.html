@@ -1,0 +1,52 @@
+<div class="container mt-4">
+    <div class="container">
+        <table class ="permissiontable">
+            <thead  class="">
+                <tr>
+                    <th>Permissions</th>
+                    <th *ngFor="let role of Roles">{{role.roleName}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let permission of PermissionList"> 
+                    <td>{{permission}}</td>
+                    <td *ngFor="let role of Roles">
+                        <div *ngIf="role.permissions.includes(permission);then truepart;else falsepart"></div>
+                        {{role.permissions.includes(permission)}}
+    
+    
+                        <ng-template #truepart>
+                            <input class="form-check-input" type="checkbox" checked >
+                        </ng-template>
+                        <ng-template #falsepart>
+                            <input class="form-check-input" type="checkbox" >
+                        </ng-template>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card shadow-lg p-4 mt-4">
+        <form [formGroup]="givepermissionForm">
+            <div class="mb-3">
+                <label for="permissionSelect" class="form-label">Change Permission</label>
+                <select id="permissionSelect" class="form-select" formControlName="permissionSelect">
+                    <option *ngFor="let permission of PermissionList" [value]="permission">{{ permission }}</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="roleSelect" class="form-label">For Role</label>
+                <select id="roleSelect" class="form-select" formControlName="roleSelect">
+                    <option *ngFor="let role of Roles" [value]="role.roleName">{{ role.roleName }}</option>
+                </select>
+            </div>
+
+            <div *ngIf="givepermissionForm.value.roleSelect && givepermissionForm.value.permissionSelect">
+                <button type="button" class="btn btn-success me-2" (click)="AddPermission()">Add Permission</button>
+                <button type="button" class="btn btn-danger" (click)="UpdatePermission()">Delete Permission</button>
+            </div>
+        </form>
+    </div>
+</div>

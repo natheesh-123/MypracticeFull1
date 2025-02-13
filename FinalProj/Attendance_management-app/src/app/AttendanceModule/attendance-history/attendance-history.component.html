@@ -1,0 +1,91 @@
+<div class="attendance-page d-flex justify-content-center align-items-center vh-100" style="background-color: #f8f9fa;">
+    <div class="card shadow-lg p-4 w-75" style="border-radius: 10px;">
+      
+      <h3 class="text-center mb-3 text-primary" style="font-weight: bold;">Attendance Records</h3>
+     <br/>
+      <!-- Filter Section -->
+      <div class="mb-4 p-2 bg-light rounded">
+        <h5 class="text-secondary">Filter Attendance</h5>
+        <form [formGroup]="filterForm" (ngSubmit)="setFiler()" class="row g-3 align-items-center">
+          <div class="col-md-3">
+            <label class="form-label">Start Date:</label>
+            <input type="date" formControlName="startDate" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">End Date:</label>
+            <input type="date" formControlName="endDate" class="form-control">
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">Status:</label>
+            <select formControlName="status" class="form-select">
+              <option *ngFor="let status of Statuses" [value]="status">{{status}}</option>
+            </select>
+          </div>
+          <div class="col-md-1 text-center">
+            <button type="submit" class="btn btn-primary">Filter</button>
+          </div>
+        </form>
+      </div>
+       <br/>
+      <!-- Attendance Table -->
+      <div *ngIf="attendances.length != 0" class="table-responsive">
+        <form action="" [formGroup]="editAttendanceForm">
+          <table class="table table-striped table-bordered shadow-sm text-center">
+            <thead class="table-primary">
+              <tr>
+                <th>User ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Status</th>
+                <th>Remarks</th>
+                <th *ngIf="canEditAttendance">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let attendance of attendances">
+                <td>{{attendance.userId}}</td>
+                <td>{{attendance.user.name}}</td>
+                <td>{{attendance.user.role}}</td>
+                <td>{{attendance.date}}</td>
+                <td>{{attendance.updatedAt | date:'HH:mm'}}</td>
+                <td>
+                  <ng-container *ngIf="isEditingId != attendance.id; else editMode">
+                    {{attendance.status}}
+                  </ng-container>
+                  <ng-template #editMode>
+                    <select formControlName="status" class="form-select">
+                      <option *ngFor="let status of UpdateStatuses" [value]="status">{{status}}</option>
+                    </select>
+                    <button type="submit" (click)="updateAttendance(attendance)" class="btn btn-success btn-sm mt-2">Update</button>
+                  </ng-template>
+                </td>
+                <td>{{attendance.remarks || "-"}}</td>
+                <td *ngIf="canEditAttendance">
+                  <button *ngIf="isEditingId != attendance.id" class="btn btn-warning btn-sm me-1" (click)="editStatusof(attendance)">Edit</button>
+                  <button *ngIf="isEditingId != attendance.id" class="btn btn-danger btn-sm me-1" (click)="deleteStatusof(attendance)">Delete</button>
+                  <button *ngIf="isEditingId == attendance.id" class="btn btn-secondary btn-sm" (click)="this.isEditingId = -1;">Cancel</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </form>
+      </div>
+    <br/>
+      <!-- No Records Message -->
+      <div *ngIf="attendances.length == 0" class="text-center text-danger mt-3">
+        <h5>No Records Found. Try again...</h5>
+      </div>
+  
+      <!-- Pagination Section -->
+      <div class="d-flex justify-content-center mt-3">
+        <button type="button" class="btn btn-outline-primary ms-0" (click)="prevPage(1)">Prev</button>
+        <p class="mb-0 px-3">Page: {{page}}</p>
+        <button type="button" class="btn btn-outline-primary me-0" (click)="nextPage(1)">Next</button>
+        <button type="button" class="btn btn-outline-dark ms-3" *ngIf="page!=1" (click)="reset()">Latest</button>
+      </div>
+  
+    </div>
+  </div>
+  

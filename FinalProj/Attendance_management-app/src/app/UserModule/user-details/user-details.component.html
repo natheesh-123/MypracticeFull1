@@ -1,0 +1,37 @@
+<div class="user">
+    <div>
+        <h2>Welcome {{user.name}}</h2>
+    </div>
+    <div class="userdetails">
+        <div>
+            <ul style=" font-weight: bold" class="detailslist">
+                <li>Id</li>
+                <li>Email</li>
+                <li>Role</li>
+            </ul>
+        </div>
+        <div>
+            <ul style=" font-weight: 600; " class="detailslist">
+                <li><span>:</span>{{user.id}}</li>
+                <li><span>:</span>{{user.email}}</li>
+                <li><span>:</span>{{user.role}}</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div>
+        <p>Quick Links</p>
+        <div class=""  *ngIf="user.permissions.includes(PermissionList[2])" >
+            <a  [routerLink]="['/markattendance']">Give your attendance For the day</a>
+        </div>
+        <div class=""  *ngIf="user.permissions.includes(PermissionList[16])" >
+            <a  [routerLink]="['/viewstudentattendance']">View Attendance Requests from Students</a>
+        </div>
+        <div class=""  *ngIf="user.permissions.includes(PermissionList[12])" >
+            <a  [routerLink]="['/leaverequest']">Request Leave</a>
+        </div>
+    </div> 
+    </div>
+    
+    
+    

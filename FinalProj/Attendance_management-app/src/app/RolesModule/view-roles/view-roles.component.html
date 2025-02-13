@@ -1,0 +1,56 @@
+
+<div class="d-flex justify-content-center align-items-center vh-100" style="background-color: #f8f9fa;">
+    <div class="card shadow-lg p-4" style="width: 600px; border-radius: 10px;">
+        <h3 class="text-center mb-3 text-primary" style="font-weight: bold;">Role Management</h3>
+        <form [formGroup]="roleEditForm">
+            <table class="table table-bordered text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Role Id</th>
+                        <th>Role Name</th>
+                        <th *ngIf="CanEdit">Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let role of Roles"> 
+                        <td>
+                            <ng-container *ngIf="role.id != editingValueForId; else falseidpart">
+                                {{role.id}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <ng-container *ngIf="role.id != editingValueForId; else falsenamepart">
+                                {{role.roleName}}
+                            </ng-container>
+                        </td>
+                        <td>
+                            <button *ngIf="role.id!=editingValueForId && CanEdit" class="btn btn-warning btn-sm btn me-3" (click)="changeEdit(role.id)">Edit</button>
+                            <button *ngIf="role.id!=editingValueForId && CanEdit" class="btn btn-danger btn-sm btn me-3" (click)="deleteRole(role.id)">Delete</button>
+                            <button *ngIf="role.id==editingValueForId" class="btn btn-secondary btn-sm" (click)="editingValueForId=-1">Cancel</button>
+                            <button *ngIf="role.id==editingValueForId" class="btn btn-success btn-sm" type="submit" (click)="UpdateRole()">Update</button>
+                        </td>
+                    </tr>
+
+                    <ng-template #falseidpart>
+                        <td><input type="text" class="form-control" formControlName="roleId"></td>
+                    </ng-template>
+
+                    <ng-template #falsenamepart>
+                        <td><input type="text" class="form-control" formControlName="roleName"></td>
+                    </ng-template>
+
+                </tbody>
+            </table>
+        </form>
+        <div class="text-center mt-3">
+            <button class="btn btn-primary" (click)="changeroAddRole()">Add Role</button>
+            <form *ngIf="isAddingNewRole" [formGroup]="roleEditForm" (ngSubmit)="addRole()">
+                <div class="input-group mt-2">
+                    <input type="text" class="form-control" placeholder="Role Name" formControlName="roleName">
+                    <button type="submit" class="btn btn-success">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

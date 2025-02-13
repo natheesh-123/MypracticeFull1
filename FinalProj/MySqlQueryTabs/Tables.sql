@@ -1,0 +1,126 @@
+create database attendance_management;
+DROP DATABASE attendance_management;
+use attendance_management;
+
+DELETE FROM Users;
+DELETE FROM UsersRegistration;
+DELETE FROM Roles;
+DELETE FROM Permissions;
+DELETE FROM Attendance;
+DELETE FROM AttendanceRequests;
+DELETE FROM LeaveTypes;
+DELETE FROM LeaveRequests;
+DELETE FROM LeaveRequesthistory;
+
+DELETE FROM AttendanceRequests where user_id = 999;
+
+select * from  Users;
+select * from  UsersRegistration;
+select * from  Roles;
+select * from  Permissions;
+select * from  Attendance;
+select * from  AttendanceRequests;
+select * from  LeaveTypes;
+select * from  LeaveRequests;
+select * from LeaveRequestHistory;
+
+CREATE TABLE Users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL,
+    profile_picture VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE UsersRegistration (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL,
+    profile_picture VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Roles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Permissions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    role_id INT,
+    permission_name VARCHAR(255),
+    FOREIGN KEY (role_id) REFERENCES Roles(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE Attendance (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    date DATE NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    remarks TEXT,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE AttendanceRequests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    date DATE NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    remarks TEXT,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE LeaveTypes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE LeaveRequests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    leave_type_id INT,
+    date DATE NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    reason TEXT,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (leave_type_id) REFERENCES LeaveTypes(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE LeaveRequestHistory (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    leave_type_id INT,
+    date DATE NOT NULL,
+    status VARCHAR(255) NOT NULL,
+    reason TEXT,
+    FOREIGN KEY (user_id) REFERENCES Users(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (leave_type_id) REFERENCES LeaveTypes(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);

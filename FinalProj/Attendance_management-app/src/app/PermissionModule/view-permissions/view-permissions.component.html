@@ -1,0 +1,32 @@
+<div class="container mt-4">
+    <table class="permissiontable">
+        <thead>
+            <tr>
+                <th>Permissions</th>
+                <th *ngFor="let role of Roles">{{role.roleName}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let permission of PermissionList"> 
+                <td>{{permission}}</td>
+                <td *ngFor="let role of Roles">
+                    <div *ngIf="role.permissions.includes(permission);then truepart;else falsepart"></div>
+                    {{role.permissions.includes(permission)}}
+
+
+                    <ng-template #truepart>
+                        <input class="form-check-input" type="checkbox" checked >
+                    </ng-template>
+                    <ng-template #falsepart>
+                        <input  type="checkbox" >
+                    </ng-template>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+
+

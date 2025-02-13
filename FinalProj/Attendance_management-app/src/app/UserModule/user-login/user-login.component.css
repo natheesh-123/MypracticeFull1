@@ -1,0 +1,63 @@
+.loginpage{
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../../../../public/school.jpg');
+    background-size: cover; /*Scales image to cover the entire background*/
+    background-repeat: no-repeat; /* Prevents repetition */
+    background-position: center; /* Centers the image */
+    position: relative;
+}
+
+
+.shadow-lg{
+    color: black;
+    font-weight: bolder;
+    font-family:none;
+}
+
+.card{
+    z-index: 5;
+}
+
+.loginpage::after{
+    content: '';
+    width: 250px;
+    height:300px;
+    position: absolute;
+    top:50vh;
+    left:50vw;
+    transform: translate(-50%,-50%);
+    background: radial-gradient(rgba(0, 0, 0, 0.183), rgb(110 108 108 / 32%), #8d8b8b52);
+    animation: boxanimation 10s ease-in-out infinite;
+    border-radius: 20px;
+}
+.loginpage::before{
+
+}
+
+@keyframes boxanimation {
+    0%{
+        left: 37vw;
+        top: 37vh;
+        width: 250px;
+        height:300px;
+    }
+    25%{
+        left: 50vw;
+        top: 50vh;
+    }
+    50%{
+        left: 67vw;
+        top: 67vh;
+        width: 250px;
+        height:300px;
+    }
+    75%{
+        left: 50vw;
+        top: 50vh;
+    }
+    100%{
+        left: 37vw;
+        top: 37vh;
+    }
+}

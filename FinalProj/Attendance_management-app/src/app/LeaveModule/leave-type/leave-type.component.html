@@ -1,0 +1,63 @@
+<div style="background-color:#7bc4f7; margin: 0px; min-height:100vh; padding:15px">
+  <div class="container w-50">
+    
+    <!-- Add/Edit Leave Type Form -->
+    <div *ngIf="canEditRole" class="card p-4 shadow-lg">
+      <h3 class="text-center mb-4">{{ isEditing ? 'Edit Leave Type' : 'Add Leave Type' }}</h3>
+      <form [formGroup]="leaveForm" (ngSubmit)="saveLeaveType()">
+        
+        <div class="mb-md-4">
+          <label for="name" class="form-label">Leave Type Name</label>
+          <input type="text" id="name" class="form-control" formControlName="name">
+        </div>
+
+        <div class="mb-md-4">
+          <label for="description" class="form-label">Description</label>
+          <textarea id="description" class="form-control" formControlName="description" rows="3"></textarea>
+        </div>
+
+        <div class="text-center">
+          <button type="submit" class="btn btn-success w-50">
+            {{ isEditing ? 'Update Leave Type' : 'Add Leave Type' }}
+          </button>
+          <button *ngIf="isEditing" type="button" class="btn btn-secondary w-25 ms-2" (click)="cancelEdit()">
+            Cancel
+          </button>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- Leave Types Table -->
+    <div class="card p-4 shadow-lg mt-4">
+      <h3 class="text-center mb-4">Leave Types</h3>
+      
+      <table class="table table-bordered table-striped text-center">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th *ngIf="canEditRole">Actions</th>         
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let type of leaveTypes">
+            <td>{{ type.id }}</td>
+            <td>{{ type.name }}</td>
+            <td>{{ type.description || 'N/A' }}</td>
+            <td *ngIf="canEditRole">
+              <button class="btn btn-primary btn-sm me-2" (click)="editLeaveType(type)">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="deleteLeaveType(type.id)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

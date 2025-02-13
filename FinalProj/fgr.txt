@@ -1,0 +1,106 @@
+import { inject } from '@angular/core';
+	import { Store } from '@ngrx/store';
+	import { UserState } from '../../../store/user/user.state';
+
+private userstore = inject(Store<{user:UserState}>);
+  	public user:any;
+
+constructor(private _route:Router, private _http: DbservicesService){}
+
+
+ngOnInit(){
+    this.userstore.select(state => state.user).subscribe(data => this.user=data);
+
+    if(!this.user.permissions.includes("NewUserRequests"))
+      this._route.navigate(['/']);
+    else
+      this.getUserRequests();
+	
+this.updateRequestForm = new FormGroup({
+      id: new FormControl("",[Validators.required]),
+      name: new FormControl("",[Validators.required]),
+      email: new FormControl("",[Validators.required]),
+      password: new FormControl("",[Validators.required]),
+      role: new FormControl("",[Validators.required]),
+      profilePicture: new FormControl("",[Validators.required])
+    })
+
+}
+
+
+
+export const PermissionList = 
+["ViewProfile"/*0*/,"EditProfile"/*1*/,"MarkAttendance"/*2*/,"AttendanceHistory"/*3*/,"ViewStudentAttendance"/*4*/,"ViewTeacherAttendance"/*5*/,
+"ViewAllAttendance"/*6*/,"ViewRoles"/*7*/,"EditRoles"/*8*/,"ViewPermissions"/*9*/,"EditPermissions"/*10*/,"MakeLeaveRequest"/*11*/,"LeaveRequestHistory"/*12*/,
+"StudentLeaveRequest"/*13*/,"TeacherLeaveRequest"/*14*/,"AllLeaveRequest"/*15*/,"ViewLeaveTypes"/*16*/,"EditLeaveTypes"/*17*/,"EditAttendance"/*18*/,
+"StudentAttendanceRequest"/*19*/,"TeachersAttendanceRequest"/*20*/,"AllAttendanceRequest"/*21*/,"ViewUsers"/*22*/,"EditUsers"/*23*/, "NewUserRequests"/*24*/]
+
+
+
+Id Validators.pattern("^[0-9]{3,4}$")
+Name Validators.pattern("^[a-zA-Z ]{3,20}$")
+Email Validators.pattern("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")
+password Validators.pattern("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
+
+
+
+(blur)="validate('id')"
+validate(formcontrolname:any){
+    if(formcontrolname == "id"){
+      if(this.regForm.get("id").invalid){
+        if(this.regForm.get("id").errors.pattern){
+          addMessage({type:"warning", message:"Id is a 3 or 4 Digit Number"});
+        }
+        if(this.regForm.get("id").errors.required){
+          addMessage({type:"warning", message:"id Field is Requied"});
+        }
+      }
+    }
+    else if(formcontrolname == "password"){
+      if(this.regForm.get("password").invalid){
+        if(this.regForm.get("password").errors.pattern){
+          addMessage({
+            type:"warning", 
+            message:"Password should have Lower, Upper, Digits, Special Characters "});
+        }
+        if(this.regForm.get("password").errors.required){
+          addMessage({type:"warning", message:"Password Field is Requied"});
+        }
+      }
+    }
+    else if(formcontrolname == "email"){
+      if(this.regForm.get("email").invalid){
+        if(this.regForm.get("email").errors.pattern){
+          addMessage({type:"warning", message:"InValid Email"});
+        }
+        if(this.regForm.get("email").errors.required){
+          addMessage({type:"warning", message:"Email is Requied"});
+        }
+      }
+    }
+    else if(formcontrolname == "name"){
+      if(this.regForm.get("name").invalid){
+        if(this.regForm.get("name").errors.pattern){
+          addMessage({type:"warning", message:"Name should be 3 - 20 characters"});
+        }
+        if(this.regForm.get("name").errors.required){
+          addMessage({type:"warning", message:"Name Field is Requied"});
+        }
+      }
+    }
+	else if(formcontrolname == "role"){
+          if(this.addUserForm.get("role").invalid){
+            if(this.addUserForm.get("role").errors.required){
+              addMessage({type:"warning", message:"Role Field is Requied"});
+            }
+          }
+        }
+    
+  }
+
+
+Ensures at least one lowercase letter.
+Ensures at least one uppercase letter.
+Ensures at least one digit.
+Ensures at least one special character.
+Matches a string of at least 8 characters, allowing letters, numbers, and the specified special characters.

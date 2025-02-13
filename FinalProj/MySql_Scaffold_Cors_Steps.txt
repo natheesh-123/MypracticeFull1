@@ -1,0 +1,70 @@
+1. Install packages:
+
+dotnet add package Microsoft.EntityFrameworkCore --version 8.0.2
+dotnet add package Microsoft.EntityFrameworkCore.Relational --version 8.0.2
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 8.0.2
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 8.0.2
+dotnet add package Pomelo.EntityFrameworkCore.MySql
+
+
+2. Check the installed package and version installed with:
+
+dotnet list package
+
+
+3. Use the Scaffold Command:
+#create a Data folder inside the project
+
+dotnet ef dbcontext scaffold "Server=localhost;Database=attendance_management;User=root;Port=3306;Password=Database@123;" Pomelo.EntityFrameworkCore.MySql --output-dir Models --context-dir Data --context ApplicationDbContext --force
+
+
+#program.cs
+
+using Attendance_management.Data;
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
+    ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
+	
+	
+	
+	
+#appsettings.json
+
+    "ConnectionStrings": {
+        "DefaultConnection": "Server=localhost;Database=attendance_management;User=root;Port=3306;Password=Database@123;"
+    },	
+
+
+
+
+
+
+
+
+
+#Cors - to allow Api Request from any server.
+
+1. install Cors
+
+dotnet add package Microsoft.AspNet.Cors
+
+
+
+
+2. program.cs
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder =>
+        {
+            builder.AllowAnyOrigin()  // Allows any origin
+                   .AllowAnyMethod()  // Allows any HTTP method (GET, POST, etc.)
+                   .AllowAnyHeader(); // Allows any header
+        });
+});
+
+
+
+app.UseCors("AllowAllOrigins");

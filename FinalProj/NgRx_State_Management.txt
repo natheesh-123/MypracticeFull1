@@ -1,0 +1,145 @@
+*What is NgRx?
+    NgRx is a state management library for Angular inspired by Redux (a popular state management library in React). 
+    It helps you manage the state of your application in a predictable way using a unidirectional data flow.
+
+*Core Concepts of NgRx
+
+State:      The single source of truth for your application's data.
+Actions:    Events that describe something that happened in the application (e.g., "Load Users").
+Reducers:   Pure functions that take the current state and an action, and return a new state.
+Selectors:  Functions that allow you to query and derive data from the state.
+Effects:    Side effects (e.g., API calls) that occur in response to actions.
+Store:      The central hub that holds the application state and provides methods to interact with it.
+
+
+1. Install NgRx Packages
+
+    npm install @ngrx/store @ngrx/effects @ngrx/entity @ngrx/store-devtools
+
+
+2. Define the User State
+
+	Create a ts file.
+	src/store/user/user.state.ts
+
+    export interface UserState2{
+        id:number|null;
+        name:string|null;
+        email:string|null;
+        role:string|null;
+        permissions:string[]|null;
+        profilepicture:string|null;
+    }
+
+    export const initialStateUserData:UserState2 = {
+        id:null,
+        name:null,
+        email:null,
+        role:null,
+        permissions:[],
+        profilepicture:null
+    }
+
+
+
+3. Create User Actions
+
+	Create a ts file.
+	src/store/user/user.actions.ts
+
+    import { createAction, props } from "@ngrx/store";
+
+    export interface SaveUserDataPayload {
+        id: number;
+        name: string;
+        email: string;
+        role: string;
+        permissions: string[];
+        profilepicture: string;
+    }
+    
+    export const saveUserData = createAction(
+        '[UserData] Save User Data',
+        props<SaveUserDataPayload>() // Use the interface here
+    );
+
+
+
+3. Create User Reducer
+
+	Create a ts file.
+	src/store/user/user.reducer.ts
+
+    import { createReducer, on } from "@ngrx/store";
+    import { initialStateUserData } from "./userdata.state";
+    import { saveUserData } from "./userdata.actions";
+
+    export const userdataReducer = createReducer(
+        initialStateUserData,
+        on(saveUserData, (state, {id,name,email,role,permissions,profilepicture}) => ({
+            id,
+            name,
+            email,
+            role,
+            permissions,
+            profilepicture
+        }))
+    )
+
+
+4. app.config.ts
+
+	import { provideStore } from '@ngrx/store';
+	import { userReducer } from '../store/user/user.reducer';
+
+   	providers: [
+       	 	provideStore({userdata:userdataReducer}),
+    	]
+
+
+
+5. Dispatch Actions
+	//Load User value from state
+	import { Component, inject } from '@angular/core';
+	import { Store } from '@ngrx/store';
+	import { UserState } from '../../../store/user/user.state';
+	import { saveUserData } from '../../../store/user/user.actions';
+	import { Router } from '@angular/router';
+
+	private userstore = inject(Store<{user:UserState}>)
+  	public user:any;
+
+ 	 constructor(private _route:Router){}
+  
+  	ngOnInit(){
+        // Get User data from store and save it in user variable.
+   		this.userstore.select(state => state.user).subscribe(date => this.user=date);
+        if(!this.user.id){
+            var localuser:any = localStorage.getItem('user');
+                if(!!localuser){
+                this.userstore.dispatch(saveUserData(JSON.parse(localuser)));
+                }
+            else{
+                this._route.navigate(['/']);
+            }
+        }
+  	}
+
+
+
+
+
+
+
+
+	import { inject } from '@angular/core';
+	import { Store } from '@ngrx/store';
+	import { UserState } from '../../../store/user/user.state';
+
+	private userstore = inject(Store<{user:UserState}>);
+  	public user:any;
+  
+  
+   		this.userstore.select(state => state.user).subscribe(date => this.user=date);
+        
+        

@@ -1,0 +1,73 @@
+/* You can add global styles to this file, and also import other style files */
+#MessageBox{
+    width: 25vw;
+    position: absolute;
+    right: 5px;
+    bottom:5px;
+}
+
+.messagetext{
+    box-shadow: 0px 0px 3px black;
+    padding: 5px 10px;
+    margin-top: 5px;
+    position: relative;
+    animation: boxinout 6s linear;
+}
+.successmessage{
+    color: green;
+}
+.warningmessage{
+    color: orangered;
+}
+.failuremessage{
+    color: red;
+}
+.successmessage::after,.warningmessage::after, .failuremessage::after{
+    content: '';
+    position:absolute;
+    left: 0px;
+    bottom: 0px;
+    width: 100%;
+    animation: loadbar 6s linear ;
+}
+.successmessage::after{
+    border: 1px solid green;
+}
+.warningmessage::after{
+    border: 1px solid orangered;
+}
+.failuremessage::after{
+    border: 1px solid red;
+}
+
+@keyframes loadbar {
+    0%{
+        width: 100%;
+    }
+    100%{
+        width:0%
+    }
+}
+@keyframes boxinout {
+    0%{
+        opacity: 1;
+    }
+    80%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+

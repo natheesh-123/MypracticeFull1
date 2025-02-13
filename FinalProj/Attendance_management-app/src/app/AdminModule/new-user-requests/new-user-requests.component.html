@@ -1,0 +1,46 @@
+<div>
+    <div *ngIf="viewRequestOf == -1; then truepart; else falsepart" ></div>
+
+    <ng-template #truepart>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>View</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let requests of userRequests" >
+
+                    <td>{{requests.id}}</td>
+                    <td>{{requests.name}}</td>
+                    <td>
+                        <button type="button" (click)="setvalues(requests)">View</button>
+                    </td>                        
+                </tr>
+            </tbody>
+        </table>
+    </ng-template>
+    <ng-template #falsepart>
+        <!-- <div *ngFor="let requests of userRequests"> -->
+            <form  [formGroup]="updateRequestForm" (ngSubmit)="approveUser()">
+                <label for="">ID</label>
+                <input type="text" formControlName="id" >
+                <label for="">Name</label>
+                <input type="text" formControlName="name" >
+                <label for="">Email</label>
+                <input type="text" formControlName="email">
+                <label for="">Password</label>
+                <input type="text" formControlName="password">
+                <label for="">Role</label>
+                <select formControlName="role" id="">
+                    <option *ngFor="let role of Roles" [value]="role.roleName">{{role.roleName}}</option>
+                </select>
+                <button type="submit">Approve</button>
+            </form>
+        <!-- </div> -->
+        <button type="button" (click)="rejectUser()" >Reject</button>
+        <button type="button" (click)="viewRequestOf=-1">Cancel</button>
+    </ng-template>
+</div>

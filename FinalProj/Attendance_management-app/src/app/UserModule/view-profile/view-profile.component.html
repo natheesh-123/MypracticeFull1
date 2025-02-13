@@ -1,0 +1,73 @@
+<div class="profile mt-5">
+    <div *ngIf="!editingPhoto" >
+        <img [src]="profileImageUrl" alt=""><hr/>
+    </div>
+    <button type="button" style="font-weight: 600; margin: 10px;" class="btn btn-outline-dark" *ngIf="canEdit" (click)="editingPhoto=true;editingDetails=false">Change profile</button>
+    
+    <div class="editprofile" *ngIf="editingPhoto">
+        <img [src]="profileImageUrl" alt="">
+        <form>    
+            <div>
+                <input type="file" (change)="onFileSelected($event)" accept="image/jpg"/>
+            </div>
+        </form>    
+        <button (click)="onUpload()" class="btn btn-success me-1" >Upload</button>
+        <button (click)="editingPhoto=false" class="btn btn-danger ms-0">Cancel</button>
+    </div>
+
+
+</div>
+
+<div class="userdetailsContainer" *ngIf="!editingDetails">    
+    <div class="userdetails" >
+        <div>
+            <ul class="detailslist">
+                <li>Id</li>
+                <li>Name</li>
+                <li>Email</li>
+                <li>Password</li>
+                <li>Role</li>
+            </ul>
+        </div>
+        <div>
+            <ul class="detailslist">
+                <li><span>:</span>{{user.id}}</li>
+                <li><span>:</span>{{user.name | titlecase}}</li>
+                <li><span>:</span>{{user.email}}</li>
+                <li><span>:</span>{{user.password}}</li>
+                <li><span>:</span>{{user.role | titlecase}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="changedetails">
+        <button type="button" class="btn btn-outline-primary" (click)="changeToForm()">Change Details</button>
+    </div>
+</div>
+
+
+<div *ngIf="editingDetails">
+
+    <form [formGroup]="detailsForm" (ngSubmit)="updateUser()">
+        <div class="">
+            <label for="username">User Name</label>
+            <input type="text" id="username" name="name" formControlName="name">
+        </div>
+        <div class="">
+            <label for="useremail">User Email</label>
+            <input type="text" id="useremail" name="email" formControlName="email">
+        </div>
+        <div class="">
+            <label for="userpassword">Password</label>
+            <input type="text" id="userpassword" name="password" formControlName="password">
+        </div>
+        <button class="btn btn-success w-25" type="submit" *ngIf="detailsForm.valid">submit</button>
+        <button class="btn btn-danger w-25 m-10" type="button" (click)="editingDetails=false">Cancel</button>
+
+    </form>   
+</div> 
+
+
+
+
+  

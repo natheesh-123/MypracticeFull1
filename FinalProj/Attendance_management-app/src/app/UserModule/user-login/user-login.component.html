@@ -1,0 +1,22 @@
+<div class="loginpage d-flex justify-content-center align-items-center vh-100" style="background-color: #f8f9fa;">
+    <div class="card shadow-lg p-4" style="width: 350px; border-radius: 10px;">
+        <h3 class="text-center mb-3 text-primary" style="font-weight: bold;">Login</h3>
+        <form [formGroup]="LoginForm" (ngSubmit)="AuthenticateUser()">
+            <div class="mb-3">
+                <label for="userid" class="form-label">User ID</label>
+                <input type="text" id="userid" formControlName="id" (blur)="validate('id')" class="form-control" placeholder="Enter your User ID">
+            </div>
+            <div class="mb-3">
+                <label for="userpassword" class="form-label">Password</label>
+                <input type="password" id="userpassword" formControlName="password" (blur)="validate('password')" class="form-control" placeholder="Enter your Password">
+            </div>
+            <button type="submit" class="btn btn-primary w-100 mt-3" [disabled]="!LoginForm.valid">Login</button>
+            <div class="text-center mt-3">
+                <a [routerLink]="['/userregistration']"  style="color:black">New User</a> |
+                <a [routerLink]="['/forgotpassword']"  style="color:black">Forgot Password?</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
